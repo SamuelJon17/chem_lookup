@@ -14,8 +14,8 @@ df.sort_index(axis =0, inplace=True)
 ##################################
 # See all data for selected solvents
 st.subheader('All Data')
-option1 = st.multiselect('Please pick a solvent of interest', list(df.index.values))
-all_option1 = st.checkbox("Select all solvents")
+option1 = st.sidebar.multiselect('Please pick a solvent of interest', list(df.index.values))
+all_option1 = st.sidebar.checkbox("Select all solvents")
 if all_option1:
     option1 = list(df.index.values)
 df_solvent = df[df.index.isin(option1)] #df[df['solvent'].isin(options)]
@@ -24,7 +24,7 @@ st.dataframe(df_solvent)
 ##################################
 # Find solvents given solubilty range
 st.subheader('Solubility Data')
-options2 = st.multiselect('Please pick chemical of interest for solubility', ['cis', 'cis_acid', 'cis_monoester', 'cis_qp',
+options2 = st.sidebar.multiselect('Please pick chemical of interest for solubility', ['cis', 'cis_acid', 'cis_monoester', 'cis_qp',
                                                                               'cis_amide', 'laudanosine_besylate', 'laudanosine',
                                                                               'midazolam_acetamide', 'midazolam_lactam',
                                                                               'diha'])
