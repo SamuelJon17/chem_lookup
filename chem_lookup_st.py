@@ -1,7 +1,7 @@
 import pandas as pd
-import numpy as np
 import os
 import streamlit as st
+
 
 # Load data
 file_name = 'solvent_scale_table.xlsx'
@@ -11,6 +11,8 @@ df['solvent'] = df['solvent'].str.lower()
 df.set_index('solvent', inplace=True)
 df.sort_index(axis =0, inplace=True)
 
+st.title('Chemical Lookup Table')
+st.text('By Dao & Jon')
 ##################################
 # See all data for selected solvents
 st.subheader('All Data')
@@ -19,7 +21,7 @@ all_option1 = st.sidebar.checkbox("Select all solvents")
 if all_option1:
     option1 = list(df.index.values)
 df_solvent = df[df.index.isin(option1)] #df[df['solvent'].isin(options)]
-st.dataframe(df_solvent)
+st.dataframe(df_solvent.transpose())
 
 ##################################
 # Find solvents given solubilty range
@@ -33,9 +35,9 @@ new_col = [col_name for chem in options2 for col_name in columns if (chem +'_min
 df_solubility = df[new_col]
 df_min =  df_solubility.loc[:, df_solubility.columns.str.contains('min')]
 df_max = df_solubility.loc[:, df_solubility.columns.str.contains('max')]
-value = st.slider('Please select a threshold value for solubility [mg/mL]', df_min.min().min(),df_max.max().max())
-df_min = df_min[df_min <= value]
-df_min = df_min.dropna(thresh =df_min.shape[1])
+value = st.slider('Please select a threshold value (greater than max) for solubility [mg/mL]', df_min.min().min(),df_max.max().max())
+#df_min = df_min[df_min <= value]
+#df_min = df_min.dropna(thresh =df_min.shape[1])
 df_max = df_max[df_max >= value]
 df_max = df_max.dropna(thresh =df_max.shape[1])
 st.dataframe(df_min.join(df_max, how = 'inner'))
