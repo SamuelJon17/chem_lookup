@@ -35,14 +35,19 @@ st.subheader('Solubility Data')
 options2 = st.sidebar.multiselect('Please pick chemical of interest for solubility', ['cis', 'cis_acid', 'cis_monoester', 'cis_qp',
                                                                               'cis_amide', 'laudanosine_besylate', 'laudanosine',
                                                                               'midazolam_acetamide', 'midazolam_lactam',
-                                                                              'diha'])
+                                                                              'diha'], default = ['cis'])
 columns = list(df.columns)
 new_col = [col_name for chem in options2 for col_name in columns if (chem +'_min' in col_name) or (chem +'_max' in col_name)]
 df_solubility = df[new_col]
-st.write(df_solubility.dtypes.to_dict())
 df_min =  df_solubility.loc[:, df_solubility.columns.str.contains('min')]
 df_max = df_solubility.loc[:, df_solubility.columns.str.contains('max')]
-value = st.slider('Please select a threshold value (greater than max) for solubility [mg/mL]', df_min.min().min(),df_max.max().max())
+try:
+    min = float(df_min.min().min())
+    max = float(df_max.max().max())
+    value = st.slider('Please select a threshold value (greater than max) for solubility [mg/mL]', min_value = min,max_value = max, step = float(1))
+except:
+    st.write('Please select chemical(s) of interest')
+
 #df_min = df_min[df_min <= value]
 #df_min = df_min.dropna(thresh =df_min.shape[1])
 df_max = df_max[df_max >= value]
@@ -55,5 +60,5 @@ st.subheader('Variable of Interest')
 df_var = df.iloc[:,0:7]
 options3 = st.selectbox('Please pick chemical of interest for solubility',list(df_var.columns), index = 0)
 df_var2 = df_var[options3]
-var = st.slider('Please select a threshold value (greater than) for {}'.format(options3), df_var2.min(),df_var2.max())
+var = st.slider('Please select a threshold value (greater than) for {}'.format(options3), min_value = float(df_var2.min()),max_value = float(df_var2.max()), value =float(0), step = float(1))
 st.dataframe(df_var2[df_var2 >= var])
