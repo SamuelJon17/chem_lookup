@@ -41,7 +41,6 @@ value = st.slider('Please select a threshold value (greater than max) for solubi
 df_max = df_max[df_max >= value]
 df_max = df_max.dropna(thresh =df_max.shape[1])
 st.dataframe(df_min.join(df_max, how = 'inner'))
-#idx= np.r_[0:7,df.columns.get_indexer(new_col)]
 
 ##################################
 # Find variable of interest given threshold value
