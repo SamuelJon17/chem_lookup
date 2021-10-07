@@ -5,8 +5,9 @@ import streamlit as st
 
 # Load data
 file_name = 'solvent_scale_table.xlsx'
-path = os.path.join(os.getcwd(), file_name)
-df = pd.read_excel(path, sheet_name = 'main')
+#path = os.path.join(os.getcwd(), file_name)
+#df = pd.read_excel(file_name, sheet_name = 'main')
+df = pd.read_csv('solvent_scale_table.csv')
 df['solvent'] = df['solvent'].str.lower()
 df.set_index('solvent', inplace=True)
 df.sort_index(axis =0, inplace=True)
