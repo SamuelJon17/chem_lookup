@@ -60,5 +60,5 @@ st.subheader('Variable of Interest')
 df_var = df.iloc[:,0:7]
 options3 = st.selectbox('Please pick chemical of interest for solubility',list(df_var.columns), index = 0)
 df_var2 = df_var[options3]
-var = st.slider('Please select a threshold value (greater than) for {}'.format(options3), min_value = float(df_var2.min()),max_value = float(df_var2.max()), value =float(0), step = float(1))
+var = st.slider('Please select a threshold value (greater than) for {}'.format(options3), min_value = float(df_var2.min()),max_value = float(df_var2.max()), value =float(0), step = float(.01))
 st.dataframe(df_var2[df_var2 >= var])
