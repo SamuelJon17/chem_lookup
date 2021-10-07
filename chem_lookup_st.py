@@ -9,15 +9,13 @@ file_name = 'solvent_scale_table.xlsx'
 #path = os.path.join(os.getcwd(), file_name)
 #df = pd.read_excel(file_name, sheet_name = 'main')
 df = pd.read_csv('solvent_scale_table.csv')
-st.write(df.dtypes.to_dict())
 cols = [i for i in df.columns if i not in ['solvent','class', 'avg_dielectric_constant']]
 for col in cols:
-    df[col]=pd.to_numeric(df[col])
-st.write(df.dtypes.to_dict())
+    df[col]=pd.to_numeric(df[col], errors ='coerce')
 df['solvent'] = df['solvent'].str.lower()
 df.set_index('solvent', inplace=True)
 df.sort_index(axis =0, inplace=True)
-st.write(df.dtypes.to_dict())
+
 
 st.title('Chemical Lookup Table')
 st.text('By Dao & Jon')
@@ -41,6 +39,7 @@ options2 = st.sidebar.multiselect('Please pick chemical of interest for solubili
 columns = list(df.columns)
 new_col = [col_name for chem in options2 for col_name in columns if (chem +'_min' in col_name) or (chem +'_max' in col_name)]
 df_solubility = df[new_col]
+st.write(df_solubility.dtypes.to_dict())
 df_min =  df_solubility.loc[:, df_solubility.columns.str.contains('min')]
 df_max = df_solubility.loc[:, df_solubility.columns.str.contains('max')]
 value = st.slider('Please select a threshold value (greater than max) for solubility [mg/mL]', df_min.min().min(),df_max.max().max())
