@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import numpy as np
 import streamlit as st
 
 
@@ -8,9 +9,15 @@ file_name = 'solvent_scale_table.xlsx'
 #path = os.path.join(os.getcwd(), file_name)
 #df = pd.read_excel(file_name, sheet_name = 'main')
 df = pd.read_csv('solvent_scale_table.csv')
+st.write(df.dtypes.to_dict())
+cols = [i for i in df.columns if i not in ['solvent','class', 'avg_dielectric_constant']]
+for col in cols:
+    df[col]=pd.to_numeric(df[col])
+st.write(df.dtypes.to_dict())
 df['solvent'] = df['solvent'].str.lower()
 df.set_index('solvent', inplace=True)
 df.sort_index(axis =0, inplace=True)
+st.write(df.dtypes.to_dict())
 
 st.title('Chemical Lookup Table')
 st.text('By Dao & Jon')
